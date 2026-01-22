@@ -1111,6 +1111,10 @@
             background: #f8d7da;
             color: #721c24;
         }
+        
+        .redeem-now-btn {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -1342,7 +1346,7 @@
                             <p>Enter a bonus code below to receive free points instantly!</p>
                             
                             <div class="redeem-form">
-                                <input type="text" class="redeem-input" id="bonusCodeInput" placeholder="Enter bonus code (e.g., WELCOME1000)" maxlength="20">
+                                <input type="text" class="redeem-input" id="bonusCodeInput" placeholder="Enter bonus code (e.g., TEST100)" maxlength="20">
                                 <button class="wm-button" id="redeemCodeBtn">
                                     <i class="fa fa-gift"></i> Redeem
                                 </button>
@@ -1364,7 +1368,7 @@
                         </div>
                         
                         <div class="wm-alert">
-                            <i class="fa fa-lightbulb-o"></i> <strong>Tip:</strong> Follow us on social media to get exclusive bonus codes!
+                            <i class="fa fa-lightbulb-o"></i> <strong>Tip:</strong> Use <strong>TEST100</strong> for 100 points (always works!)
                         </div>
                     </div>
                 </div>
@@ -2139,7 +2143,7 @@
         
         // Load redeem page
         function loadRedeemPage() {
-            // Load bonus codes (you'll need to add this to your backend)
+            // Load bonus codes
             loadBonusCodes();
         }
         
@@ -2336,32 +2340,57 @@
         
         // Load bonus codes
         function loadBonusCodes() {
-            // This would need to be implemented in your backend
-            // For now, we'll use sample data
-            const sampleCodes = [
-                { code: 'WELCOME500', points: 500, description: 'Welcome bonus for new users', expires: '2026-12-31', redeemed: false },
-                { code: 'NEWYEAR1000', points: 1000, description: 'New Year special bonus', expires: '2026-01-31', redeemed: true },
-                { code: 'SURVEY250', points: 250, description: 'Complete your first survey', expires: '2026-12-31', redeemed: false },
-                { code: 'REFERRAL2000', points: 2000, description: 'Refer a friend bonus', expires: '2026-06-30', redeemed: false }
-            ];
+            if (!currentUser) return;
             
+            $('#bonusCodesContainer').addClass('loading').html('<div class="loading-spinner"></div><p>Loading bonus codes...</p>');
+            
+            callAppsScript('getBonusCodes', { userId: currentUser.userId })
+                .then(bonusCodes => {
+                    displayBonusCodes(bonusCodes);
+                })
+                .catch(error => {
+                    console.error('Error loading bonus codes:', error);
+                    $('#bonusCodesContainer').removeClass('loading').html('<div class="wm-alert">Error loading bonus codes. Please try again.</div>');
+                });
+        }
+        
+        // Display bonus codes
+        function displayBonusCodes(bonusCodes) {
             let codesHtml = '';
-            sampleCodes.forEach(bonusCode => {
-                const statusClass = bonusCode.redeemed ? 'status-redeemed' : 'status-available';
-                const statusText = bonusCode.redeemed ? 'Redeemed' : 'Available';
-                
-                codesHtml += `
-                    <div class="bonus-code-item">
-                        <div class="bonus-code-details">
-                            <div class="bonus-code-name">${bonusCode.code} - ${formatPoints(bonusCode.points)} points</div>
-                            <div class="bonus-code-value">${bonusCode.description} • Expires: ${bonusCode.expires}</div>
+            
+            if (!bonusCodes || bonusCodes.length === 0) {
+                codesHtml = '<div class="wm-alert"><i class="fa fa-info-circle"></i> No bonus codes available at the moment. Check back later!</div>';
+            } else {
+                bonusCodes.forEach(bonusCode => {
+                    const statusClass = bonusCode.redeemed ? 'status-redeemed' : 'status-available';
+                    const statusText = bonusCode.redeemed ? 'Redeemed' : 'Available';
+                    const buttonHtml = bonusCode.redeemed ? 
+                        '<button class="wm-button wm-button-small" disabled><i class="fa fa-check"></i> Redeemed</button>' :
+                        `<button class="wm-button wm-button-small redeem-now-btn" data-code="${bonusCode.code}"><i class="fa fa-gift"></i> Redeem Now</button>`;
+                    
+                    codesHtml += `
+                        <div class="bonus-code-item">
+                            <div class="bonus-code-details">
+                                <div class="bonus-code-name">${bonusCode.code} - ${formatPoints(bonusCode.points)} points</div>
+                                <div class="bonus-code-value">${bonusCode.description} • Expires: ${bonusCode.expires}</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bonus-code-status ${statusClass}">${statusText}</div>
+                                ${buttonHtml}
+                            </div>
                         </div>
-                        <div class="bonus-code-status ${statusClass}">${statusText}</div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
             
             $('#bonusCodesContainer').removeClass('loading').html(codesHtml);
+            
+            // Add event listeners to redeem buttons
+            $('.redeem-now-btn').off('click').on('click', function() {
+                const code = $(this).data('code');
+                $('#bonusCodeInput').val(code);
+                redeemBonusCode();
+            });
         }
         
         // Redeem bonus code
@@ -2375,47 +2404,29 @@
             
             $('#redeemCodeBtn').html('<i class="fa fa-spinner fa-spin"></i> Redeeming...').prop('disabled', true);
             
-            // This would need to be implemented in your backend
-            // For now, we'll simulate a successful redemption
-            setTimeout(() => {
-                if (bonusCode === 'WELCOME500') {
-                    // Simulate adding points
-                    simulateBonusCodeRedemption(bonusCode, 500);
-                } else if (bonusCode === 'TEST100') {
-                    simulateBonusCodeRedemption(bonusCode, 100);
-                } else {
-                    showRedeemMessage('Invalid or expired bonus code', 'error');
+            callAppsScript('redeemBonus', { userId: currentUser.userId, code: bonusCode })
+                .then(response => {
+                    if (response.success) {
+                        showRedeemMessage(response.message, 'success');
+                        $('#bonusCodeInput').val('');
+                        
+                        // Refresh user data
+                        loadAppData();
+                        
+                        // Reload bonus codes
+                        setTimeout(() => {
+                            loadBonusCodes();
+                        }, 500);
+                    } else {
+                        showRedeemMessage(response.message, 'error');
+                    }
                     $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
-                }
-            }, 1000);
-        }
-        
-        // Simulate bonus code redemption
-        function simulateBonusCodeRedemption(code, points) {
-            callAppsScript('addPoints', { 
-                userId: currentUser.userId,
-                points: points,
-                description: 'Bonus Code: ' + code,
-                offerwallId: 'BONUS'
-            })
-            .then(response => {
-                if (response.success) {
-                    showRedeemMessage(`Successfully redeemed ${formatPoints(points)} points from ${code}!`, 'success');
-                    $('#bonusCodeInput').val('');
-                    
-                    // Refresh user data
-                    loadAppData();
-                    loadRedeemPage();
-                } else {
-                    showRedeemMessage('Failed to redeem code: ' + response.message, 'error');
-                }
-                $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
-            })
-            .catch(error => {
-                console.error('Bonus code error:', error);
-                showRedeemMessage('Error redeeming code', 'error');
-                $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
-            });
+                })
+                .catch(error => {
+                    console.error('Bonus code error:', error);
+                    showRedeemMessage('Error redeeming code. Please try again.', 'error');
+                    $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
+                });
         }
         
         // Test postback
