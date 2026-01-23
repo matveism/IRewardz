@@ -1026,21 +1026,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        .postback-test {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        
-        .test-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        
         /* Bonus Code Redeem Section */
         .redeem-code-section {
             margin: 20px 0;
@@ -1214,9 +1199,6 @@
                     <div class="wm-user-menu-item" id="refreshBalanceBtn">
                         <i class="fa fa-refresh"></i> Refresh Balance
                     </div>
-                    <div class="wm-user-menu-item" id="testPostbackBtn">
-                        <i class="fa fa-flask"></i> Test Postback
-                    </div>
                     <div class="wm-user-menu-item logout" id="logoutBtn">
                         <i class="fa fa-sign-out"></i> Logout
                     </div>
@@ -1286,29 +1268,6 @@
                             <div class="loading-spinner"></div>
                             <p>Loading offerwalls...</p>
                         </div>
-                        
-                        <!-- Postback Test Section -->
-                        <div id="postbackTestSection" class="postback-test hidden">
-                            <h5>Test Postback System</h5>
-                            <p>Test the real-time postback system by simulating offer completions:</p>
-                            <div class="test-buttons">
-                                <button class="wm-button wm-button-small test-postback" data-amount="1">
-                                    Test $1 Offer
-                                </button>
-                                <button class="wm-button wm-button-small test-postback" data-amount="5">
-                                    Test $5 Offer
-                                </button>
-                                <button class="wm-button wm-button-small test-postback" data-amount="10">
-                                    Test $10 Offer
-                                </button>
-                                <button class="wm-button wm-button-small test-postback" data-amount="25">
-                                    Test $25 Offer
-                                </button>
-                            </div>
-                            <p style="font-size: 11px; margin-top: 10px; color: var(--wm-text-light);">
-                                <i class="fa fa-info-circle"></i> These are test transactions to verify the postback system works.
-                            </p>
-                        </div>
                     </div>
                 </div>
                 
@@ -1365,10 +1324,6 @@
                                     <p>Loading bonus codes...</p>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="wm-alert">
-                            <i class="fa fa-lightbulb-o"></i> <strong>Tip:</strong> Use <strong>TEST100</strong> for 100 points (always works!)
                         </div>
                     </div>
                 </div>
@@ -1552,7 +1507,7 @@
         </div>
         
         <div class="wm-footer">
-            iRewardz &copy; 2026 | Real-time Offerwall Integration | Postback URL: <span id="postbackUrl" style="font-family: monospace; font-size: 10px;"></span>
+            iRewardz &copy; 2026 | Real-time Offerwall Integration
         </div>
     </div>
 
@@ -1707,12 +1662,6 @@
                 }
             });
             
-            // Test postback button
-            $('#testPostbackBtn').on('click', function() {
-                $('#postbackTestSection').toggle();
-                $('#userMenu').removeClass('active');
-            });
-            
             // Logout button handler
             $('#logoutBtn').on('click', function() {
                 if (confirm('Are you sure you want to logout?')) {
@@ -1746,14 +1695,6 @@
                 }
                 
                 $('#userMenu').removeClass('active');
-            });
-            
-            // Test postback buttons
-            $(document).on('click', '.test-postback', function() {
-                const amount = $(this).data('amount');
-                if (currentUser && confirm(`Test postback for $${amount}? Points will be credited in real-time.`)) {
-                    testPostback(amount);
-                }
             });
             
             // Offerwall modal close
@@ -1905,7 +1846,6 @@
                 $('#userInitials').text(getInitials(currentUser.username));
                 $('#menuUsername').text(currentUser.username);
                 $('#userWelcome').text(`Welcome back, ${currentUser.username}!`);
-                $('#postbackUrl').text(APPS_SCRIPT_URL + '?action=postback&offerwall={name}&user_id={userid}&amount={amount}');
             }
         }
         
@@ -1982,9 +1922,6 @@
                         
                         updateUI();
                         loadPageData('earn');
-                        
-                        // Show postback test section for testing
-                        $('#postbackTestSection').show();
                     } else {
                         showNotification('Failed to load app data: ' + response.message, 'error');
                         logout();
@@ -2427,31 +2364,6 @@
                     showRedeemMessage('Error redeeming code. Please try again.', 'error');
                     $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
                 });
-        }
-        
-        // Test postback
-        function testPostback(amount) {
-            callAppsScript('testPostback', { 
-                userId: currentUser.userId,
-                amount: amount,
-                offerwall: 'test'
-            })
-            .then(response => {
-                if (response.success) {
-                    showNotification(`Test postback successful! ${formatPoints(response.points)} points added. Status: ${response.status}`, 'success');
-                    
-                    // Refresh data after a delay
-                    setTimeout(() => {
-                        loadAppData();
-                    }, 1000);
-                } else {
-                    showNotification('Test postback failed: ' + response.message, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Test postback error:', error);
-                showNotification('Error testing postback', 'error');
-            });
         }
         
         // Send chat message
