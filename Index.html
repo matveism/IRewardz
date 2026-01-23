@@ -2486,5 +2486,37 @@
             }, 3000);
         }
     </script>
+    <script>
+// Function to set background based on PST time
+function setBackgroundByPST() {
+    // Get current UTC time
+    const now = new Date();
+
+    // Convert UTC to PST (UTC - 8 hours; ignore daylight savings for simplicity)
+    const pstOffset = -8; // PST is UTC-8
+    const pstHours = now.getUTCHours() + pstOffset;
+
+    // Normalize hours to 0-23
+    const hour = (pstHours + 24) % 24;
+
+    // Select body element
+    const body = document.body;
+
+    // Set background based on time
+    if (hour >= 6 && hour < 18) {
+        // Daytime: 6 AM - 5:59 PM PST
+        body.style.backgroundColor = "#ffffff"; // Light
+        body.style.color = "#000000"; // Optional: text color
+    } else {
+        // Nighttime: 6 PM - 5:59 AM PST
+        body.style.backgroundColor = "#1e1e1e"; // Dark
+        body.style.color = "#ffffff"; // Optional: text color
+    }
+}
+
+// Run on page load
+window.addEventListener('load', setBackgroundByPST);
+</script>
+
 </body>
 </html>
