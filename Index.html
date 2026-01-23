@@ -16,8 +16,8 @@
             --wm-chrome: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
             --wm-chrome-active: linear-gradient(to bottom, #4a7bd9, #2a5bb5);
             --wm-title-gradient: linear-gradient(to bottom, #ffffff, #e0e8f8);
-            --wm-text: #333333;
-            --wm-text-light: #666666;
+            --wm-text: black;
+            --wm-text-light: black;
             --wm-border: #b0b0b0;
             --wm-shadow: rgba(0, 0, 0, 0.2);
             --wm-green: #00a308;
@@ -27,16 +27,27 @@
         
         body {
             background-image: url('https://img.freepik.com/free-vector/gradient-galaxy-background-with-colorful-planets_23-2148999259.jpg');
-    background-repeat: no-repeat;
-    background-size: cover; /* makes it cover the whole screen */
-    background-position: center; /* centers the image */
-    background-attachment: fixed; /* optional: makes it stay fixed when scrolling */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
             color: var(--wm-text);
             padding-top: 15px;
             padding-bottom: 25px;
             font-size: 13px;
             line-height: 1.4;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        .day-mode {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        
+        .night-mode {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
         }
         
         .wm-container {
@@ -47,6 +58,28 @@
             box-shadow: 0 4px 12px var(--wm-shadow);
             overflow: hidden;
             border: 1px solid var(--wm-border);
+            transition: background-color 0.5s ease;
+        }
+        
+        .night-mode .wm-container {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+        
+        .night-mode .wm-panel,
+        .night-mode .points-card,
+        .night-mode .wm-table {
+            background-color: #3d3d3d;
+            color: #ffffff;
+        }
+        
+        .night-mode .wm-text,
+        .night-mode .wm-text-light {
+            color: #cccccc !important;
+        }
+        
+        .night-mode .wm-border {
+            border-color: #555555 !important;
         }
         
         .wm-header {
@@ -1104,9 +1137,38 @@
         .redeem-now-btn {
             margin-left: 10px;
         }
+        
+        /* Time indicator */
+        .time-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .day-mode .time-indicator {
+            background: rgba(0,0,0,0.7);
+            color: white;
+        }
+        
+        .night-mode .time-indicator {
+            background: rgba(255,255,255,0.2);
+            color: #cccccc;
+        }
     </style>
 </head>
 <body>
+    <!-- Time Indicator -->
+    <div class="time-indicator" id="timeIndicator">
+        PST: <span id="currentPSTTime"></span>
+    </div>
+    
     <!-- Login Form -->
     <div id="loginContainer" class="auth-container">
         <div class="auth-box">
@@ -1542,6 +1604,8 @@
         $(document).ready(function() {
             initializeDatabase();
             checkLoginStatus();
+            startTimeUpdate();
+            setDayNightMode();
             
             if ($(window).width() <= 767) {
                 $('.mobile-swipe-hint').show();
@@ -1798,6 +1862,47 @@
                 }
             });
         });
+        
+        // Function to set day/night mode based on PST time
+        function setDayNightMode() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            // PST is UTC-8 (or UTC-7 during daylight saving)
+            let pstOffset = -8 * 60 * 60000; // -8 hours in milliseconds
+            
+            // Check if we're in daylight saving time (second Sunday in March to first Sunday in November)
+            const year = now.getUTCFullYear();
+            const dstStart = new Date(Date.UTC(year, 2, 14 - new Date(Date.UTC(year, 2, 1)).getUTCDay()));
+            const dstEnd = new Date(Date.UTC(year, 10, 7 - new Date(Date.UTC(year, 10, 1)).getUTCDay()));
+            
+            if (now >= dstStart && now < dstEnd) {
+                pstOffset = -7 * 60 * 60000; // -7 hours during daylight saving
+            }
+            
+            const pstTime = new Date(utc + pstOffset);
+            const hour = pstTime.getHours();
+            
+            // Update time indicator
+            const timeStr = pstTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZoneName: 'short'});
+            $('#currentPSTTime').text(timeStr);
+            $('#timeIndicator').show();
+            
+            // Remove existing classes
+            $('body').removeClass('day-mode night-mode');
+            
+            // Set day or night mode
+            if (hour >= 6 && hour < 18) {
+                $('body').addClass('day-mode');
+            } else {
+                $('body').addClass('night-mode');
+            }
+        }
+        
+        // Start time update interval
+        function startTimeUpdate() {
+            setDayNightMode();
+            setInterval(setDayNightMode, 60000); // Update every minute
+        }
         
         // Initialize database
         function initializeDatabase() {
@@ -2490,37 +2595,5 @@
             }, 3000);
         }
     </script>
-    <script>
-// Function to set background based on PST time
-function setBackgroundByPST() {
-    // Get current UTC time
-    const now = new Date();
-
-    // Convert UTC to PST (UTC - 8 hours; ignore daylight savings for simplicity)
-    const pstOffset = -8; // PST is UTC-8
-    const pstHours = now.getUTCHours() + pstOffset;
-
-    // Normalize hours to 0-23
-    const hour = (pstHours + 24) % 24;
-
-    // Select body element
-    const body = document.body;
-
-    // Set background based on time
-    if (hour >= 6 && hour < 18) {
-        // Daytime: 6 AM - 5:59 PM PST
-        body.style.backgroundColor = "#ffffff"; // Light
-        body.style.color = "#000000"; // Optional: text color
-    } else {
-        // Nighttime: 6 PM - 5:59 AM PST
-        body.style.backgroundColor = "#1e1e1e"; // Dark
-        body.style.color = "#ffffff"; // Optional: text color
-    }
-}
-
-// Run on page load
-window.addEventListener('load', setBackgroundByPST);
-</script>
-
 </body>
 </html>
