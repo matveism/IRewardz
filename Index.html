@@ -1594,6 +1594,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
     <script>
+        // Example in JavaScript
+const userId = loggedInUser.id; // Get logged-in user's ID dynamically
+const apiKey = "69745f8e8f2ce697824072";
+
+const wannadsUrl = `https://earn.wannads.com/wall?apiKey=${apiKey}&userId=${userId}`;
+
+// Open in new tab when user clicks
+window.open(wannadsUrl, "_blank");
+
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNVZP5iQVBWQCLOQfbdPva57fSYo9UbEWjjHQls7p2ygLufkDAldaWZZ4q6PB4twMqqw/exec';
         
         let currentUser = null;
