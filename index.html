@@ -3,198 +3,2609 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="iRewardz - Earn rewards by completing offers">
-    <meta name="robots" content="noindex, nofollow">
-    <title>iRewardz - Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/auth.css">
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <title>iRewardz - Rewards Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --wm-blue: #2a4a8f;
+            --wm-blue-light: #2a4a8f;
+            --wm-silver: #e8e8e8;
+            --wm-silver-dark: #d0d0d0;
+            --wm-silver-darker: #a0a0a0;
+            --wm-chrome: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+            --wm-chrome-active: linear-gradient(to bottom, #4a7bd9, #2a5bb5);
+            --wm-title-gradient: linear-gradient(to bottom, #ffffff, #e0e8f8);
+            --wm-text: black;
+            --wm-text-light: black;
+            --wm-border: #b0b0b0;
+            --wm-shadow: rgba(0, 0, 0, 0.2);
+            --wm-green: #00a308;
+            --wm-orange: #ff8c00;
+            --wm-red: #e51400;
+        }
+        
+        body {
+            background-image: url('https://img.freepik.com/free-vector/gradient-network-connection-background_23-2148865393.jpg?semt=ais_hybrid&w=740&q=80');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            
+            padding-top: 15px;
+            padding-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.4;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        .day-mode {
+            background-color:  !important;
+            
+        }
+        
+        .night-mode {
+            background-color:  !important;
+            color:  !important;
+        }
+        
+        .wm-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--wm-shadow);
+            overflow: hidden;
+            border: 1px solid var(--wm-border);
+            transition: background-color 0.5s ease;
+        }
+        
+        .night-mode .wm-container {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+        
+        .night-mode .wm-panel,
+        .night-mode .points-card,
+        .night-mode .wm-table {
+            background-color: #3d3d3d;
+            color: #ffffff;
+        }
+        
+        .night-mode .wm-text,
+        .night-mode .wm-text-light {
+            color: #cccccc !important;
+        }
+        
+        .night-mode .wm-border {
+            border-color: #555555 !important;
+        }
+        
+        .wm-header {
+            background: var(--wm-blue);
+            color: white;
+            padding: 15px 20px;
+            position: relative;
+            border-bottom: 1px solid var(--wm-blue-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .wm-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #4a7bd9, #2a5bb5, #4a7bd9);
+        }
+        
+        .wm-title-area {
+            flex: 1;
+        }
+        
+        .wm-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            background: var(--wm-title-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .wm-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+        
+        .wm-user-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .wm-user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, #4a7bd9, #2a5bb5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .wm-user-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .wm-user-menu {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background: white;
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px var(--wm-shadow);
+            width: 200px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .wm-user-menu.active {
+            display: block;
+        }
+        
+        .wm-user-menu-header {
+            background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--wm-border);
+            font-weight: 600;
+            color: var(--wm-blue);
+        }
+        
+        .wm-user-menu-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .wm-user-menu-item:hover {
+            background: #f8f8f8;
+        }
+        
+        .wm-user-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .wm-user-menu-item i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .wm-user-menu-item.logout {
+            color: var(--wm-red);
+        }
+        
+        .wm-tabs {
+            background: var(--wm-silver);
+            border-bottom: 1px solid var(--wm-border);
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .wm-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .wm-tab {
+            padding: 12px 20px;
+            white-space: nowrap;
+            border-right: 1px solid var(--wm-border);
+            background: var(--wm-chrome);
+            color: var(--wm-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .wm-tab:hover, .wm-tab:focus {
+            background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
+            color: var(--wm-blue);
+            text-decoration: none;
+        }
+        
+        .wm-tab.active {
+            background: var(--wm-chrome-active);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .wm-tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+        }
+        
+        .wm-tab i {
+            margin-right: 6px;
+        }
+        
+        .wm-content {
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .wm-page {
+            display: none;
+        }
+        
+        .wm-page.active {
+            display: block;
+        }
+        
+        .wm-panel {
+            background: white;
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .wm-panel-header {
+            background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--wm-border);
+            font-weight: 600;
+            color: var(--wm-blue);
+            font-size: 15px;
+        }
+        
+        .wm-panel-body {
+            padding: 15px;
+        }
+        
+        .points-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .points-card {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(145deg, #f5f7ff, #e8ecf8);
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+        
+        .points-card-title {
+            font-size: 13px;
+            color: var(--wm-text-light);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .points-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--wm-blue);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        
+        .points-card-label {
+            font-size: 12px;
+            color: var(--wm-text-light);
+        }
+        
+        .points-card-badge {
+            display: inline-block;
+            background: var(--wm-orange);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 5px;
+        }
+        
+        .wm-button {
+            display: inline-block;
+            background: linear-gradient(to bottom, #4a7bd9, #2a5bb5);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+            border: 1px solid #2a4a8f;
+        }
+        
+        .wm-button:hover, .wm-button:focus {
+            background: linear-gradient(to bottom, #5a8be9, #3a6bc5);
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transform: translateY(-1px);
+        }
+        
+        .wm-button:active {
+            background: linear-gradient(to bottom, #2a5bb5, #4a7bd9);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.2);
+            transform: translateY(0);
+        }
+        
+        .wm-button-secondary {
+            background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
+            color: var(--wm-text);
+            border: 1px solid var(--wm-border);
+        }
+        
+        .wm-button-secondary:hover, .wm-button-secondary:focus {
+            background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+            color: var(--wm-text);
+        }
+        
+        .wm-button-small {
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+        
+        .wm-button:disabled, .wm-button[disabled] {
+            background: linear-gradient(to bottom, #e8e8e8, #d0d0d0);
+            color: var(--wm-text-light);
+            border: 1px solid var(--wm-border);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .wm-button:disabled:hover, .wm-button[disabled]:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .wm-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .wm-table th {
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--wm-text);
+            border-bottom: 1px solid var(--wm-border);
+            border-top: 1px solid var(--wm-border);
+        }
+        
+        .wm-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .wm-table tr:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .wm-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            line-height: 1;
+        }
+        
+        .wm-badge-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .wm-badge-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .wm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .wm-card {
+            background: white;
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .wm-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .wm-card-header {
+            background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--wm-border);
+            font-weight: 600;
+            color: var(--wm-blue);
+        }
+        
+        .wm-card-body {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .wm-card-body h5 {
+            margin-top: 0;
+            color: var(--wm-text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .wm-card-body p {
+            color: var(--wm-text-light);
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .wm-alert {
+            background: linear-gradient(to bottom, #fff3cd, #ffeaa7);
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            color: #856404;
+            font-size: 13px;
+        }
+        
+        .wm-alert strong {
+            color: #856404;
+        }
+        
+        .wm-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .wm-list-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+        }
+        
+        .wm-list-item:hover {
+            background: #f8f8f8;
+        }
+        
+        .wm-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .wm-list-item h5 {
+            margin: 0 0 5px 0;
+            color: var(--wm-blue);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .wm-list-item p {
+            margin: 0;
+            color: var(--wm-text-light);
+            font-size: 12px;
+        }
+        
+        .wm-accordion {
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .wm-accordion-item {
+            border-bottom: 1px solid var(--wm-border);
+        }
+        
+        .wm-accordion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .wm-accordion-header {
+            background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--wm-text);
+            transition: background 0.2s ease;
+            position: relative;
+        }
+        
+        .wm-accordion-header:hover {
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+        }
+        
+        .wm-accordion-header:after {
+            content: '\f078';
+            font-family: 'FontAwesome';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: var(--wm-text-light);
+            transition: transform 0.3s ease;
+        }
+        
+        .wm-accordion-header.active:after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .wm-accordion-body {
+            padding: 15px;
+            background: white;
+            display: none;
+        }
+        
+        .wm-accordion-body.active {
+            display: block;
+        }
+        
+        .wm-footer {
+            background: var(--wm-silver);
+            padding: 15px 20px;
+            border-top: 1px solid var(--wm-border);
+            text-align: center;
+            color: var(--wm-text-light);
+            font-size: 12px;
+        }
+        
+        /* Login/Signup Forms */
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .auth-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--wm-shadow);
+            padding: 30px;
+            border: 1px solid var(--wm-border);
+        }
+        
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-logo img {
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+        
+        .auth-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .auth-form .form-control {
+            border-radius: 4px;
+            border: 1px solid var(--wm-border);
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        .auth-form .btn-auth {
+            background: linear-gradient(to bottom, #4a7bd9, #2a5bb5);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .auth-form .btn-auth:hover {
+            background: linear-gradient(to bottom, #5a8be9, #3a6bc5);
+        }
+        
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .auth-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .auth-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block !important;
+        }
+        
+        .auth-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block !important;
+        }
+        
+        /* Offerwall Styles */
+        .offerwall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .offerwall-card {
+            background: white;
+            border: 1px solid var(--wm-border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .offerwall-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .offerwall-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border-bottom: 1px solid var(--wm-border);
+        }
+        
+        .offerwall-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 5px;
+        }
+        
+        .offerwall-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .offerwall-info {
+            flex: 1;
+        }
+        
+        .offerwall-name {
+            font-weight: 600;
+            color: var(--wm-blue);
+            margin-bottom: 5px;
+        }
+        
+        .offerwall-rate {
+            font-size: 12px;
+            color: var(--wm-text-light);
+        }
+        
+        .offerwall-body {
+            padding: 15px;
+        }
+        
+        .offerwall-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        
+        .offerwall-stat {
+            text-align: center;
+        }
+        
+        .offerwall-stat-value {
+            font-weight: 600;
+            color: var(--wm-blue);
+            font-size: 14px;
+        }
+        
+        .offerwall-stat-label {
+            color: var(--wm-text-light);
+        }
+        
+        /* Offerwall Modal */
+        .offerwall-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            padding: 20px;
+        }
+        
+        .offerwall-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .offerwall-modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 95%;
+            height: 90%;
+            max-width: 1200px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .offerwall-modal-header {
+            background: var(--wm-blue);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .offerwall-modal-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .offerwall-modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        
+        .offerwall-modal-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .offerwall-modal-body {
+            flex: 1;
+            padding: 0;
+            position: relative;
+        }
+        
+        .offerwall-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 767px) {
+            body {
+                padding: 10px;
+                background: white;
+            }
+            
+            .wm-container {
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            
+            .wm-content {
+                padding: 15px;
+            }
+            
+            .points-display {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .points-card {
+                min-width: auto;
+            }
+            
+            .wm-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .wm-tab {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            
+            .mobile-swipe-hint {
+                display: block;
+                text-align: center;
+                background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+                padding: 8px;
+                font-size: 11px;
+                color: var(--wm-text-light);
+                border-top: 1px solid var(--wm-border);
+            }
+            
+            .wm-user-menu {
+                right: 10px;
+                width: 180px;
+            }
+            
+            .offerwall-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-container {
+                margin: 20px auto;
+                padding: 10px;
+            }
+            
+            .auth-box {
+                padding: 20px;
+            }
+            
+            .offerwall-modal {
+                padding: 10px;
+            }
+            
+            .offerwall-modal-content {
+                width: 100%;
+                height: 95%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .wm-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .wm-button {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        /* Tablet-specific styles */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .wm-container {
+                max-width: 95%;
+            }
+        }
+        
+        /* Animation for points update */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .points-pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        /* Custom scrollbar for Windows Mobile style */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #d0d0d0, #a0a0a0);
+            border-radius: 5px;
+            border: 1px solid #b0b0b0;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #c0c0c0, #909090);
+        }
+        
+        .leaders-table {
+            margin-top: 20px;
+        }
+        
+        .leader-rank {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--wm-blue);
+        }
+        
+        .leader-you {
+            background-color: #f0f8ff !important;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--wm-border);
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            max-width: 80%;
+        }
+        
+        .chat-message.user {
+            background-color: #e3f2fd;
+            margin-left: auto;
+        }
+        
+        .chat-message.system {
+            background-color: #f5f5f5;
+            margin-right: auto;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--wm-border);
+            border-radius: 4px;
+        }
+        
+        .help-category {
+            margin-bottom: 20px;
+        }
+        
+        .shop-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .shop-item:last-child {
+            border-bottom: none;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--wm-text-light);
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--wm-blue);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Bonus Code Redeem Section */
+        .redeem-code-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(to bottom, #f8f9ff, #e8ecff);
+            border: 1px solid var(--wm-border);
+            border-radius: 6px;
+        }
+        
+        .redeem-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .redeem-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--wm-border);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .bonus-codes-list {
+            margin-top: 15px;
+            border-top: 1px dashed var(--wm-border);
+            padding-top: 15px;
+        }
+        
+        .bonus-code-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border: 1px solid var(--wm-border);
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .bonus-code-details {
+            flex: 1;
+        }
+        
+        .bonus-code-name {
+            font-weight: 600;
+            color: var(--wm-blue);
+        }
+        
+        .bonus-code-value {
+            font-size: 12px;
+            color: var(--wm-text-light);
+        }
+        
+        .bonus-code-status {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-redeemed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .redeem-now-btn {
+            margin-left: 10px;
+        }
+        
+        /* Time indicator */
+        .time-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .day-mode .time-indicator {
+            background: rgba(0,0,0,0.7);
+            color: white;
+        }
+        
+        .night-mode .time-indicator {
+            background: rgba(255,255,255,0.2);
+            color: #cccccc;
+        }
+    </style>
 </head>
-<body class="auth-page">
-    <!-- Background Animation -->
-    <div class="bg-animation">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+<body>
+    <!-- Time Indicator -->
+    <div class="time-indicator" id="timeIndicator">
+        PST: <span id="currentPSTTime"></span>
     </div>
     
-    <!-- Main Container -->
-    <div class="auth-container">
-        <!-- Logo Header -->
-        <div class="auth-header">
-            <div class="logo-container">
-                <img src="assets/images/logo.png" alt="iRewardz Logo" class="logo">
-                <h1>iRewardz</h1>
-                <p class="tagline">Earn Rewards • Real-Time Crediting • Secure Platform</p>
+    <!-- Login Form -->
+    <div id="loginContainer" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <img src="https://i.postimg.cc/LsNCQ35L/IMG-0253.png" alt="iRewardz Logo">
+                <h3>Welcome to iRewardz</h3>
+                <p>Login to access your rewards dashboard</p>
+            </div>
+            
+            <div id="authMessage" class="auth-message"></div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" class="form-control" id="loginEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required>
+                </div>
+                
+                <button type="submit" class="btn-auth" id="loginBtn">
+                    <i class="fa fa-sign-in"></i> Login
+                </button>
+            </form>
+            
+            <div class="auth-link">
+                Don't have an account? <a href="#" id="showSignup">Sign up here</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Signup Form -->
+    <div id="signupContainer" class="auth-container hidden">
+        <div class="auth-box">
+            <div class="auth-logo">
+                <img src="https://i.postimg.cc/LsNCQ35L/IMG-0253.png" alt="iRewardz Logo">
+                <h3>Create Your Account</h3>
+                <p>Join iRewardz and start earning points</p>
+            </div>
+            
+            <div id="signupMessage" class="auth-message"></div>
+            
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" class="form-control" id="signupUsername" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" class="form-control" id="signupEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="signupConfirmPassword" required>
+                </div>
+                
+                <button type="submit" class="btn-auth" id="signupBtn">
+                    <i class="fa fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="auth-link">
+                Already have an account? <a href="#" id="showLogin">Login here</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App Container -->
+    <div id="appContainer" class="wm-container hidden">
+        <div class="wm-header">
+            <div class="wm-title-area">
+                <h1 class="wm-title"><img src="https://i.postimg.cc/LsNCQ35L/IMG-0253.png" alt="Logo" style="width:150px; height:auto;"></h1>
+                <div class="wm-subtitle" id="userWelcome">Welcome back!</div>
+            </div>
+            
+            <div class="wm-user-area">
+                <div class="wm-user-icon" id="userIcon">
+                    <span id="userInitials">JD</span>
+                </div>
+                
+                <div class="wm-user-menu" id="userMenu">
+                    <div class="wm-user-menu-header">
+                        <i class="fa fa-user"></i> <span id="menuUsername">John Doe</span>
+                    </div>
+                    <div class="wm-user-menu-item" id="refreshBalanceBtn">
+                        <i class="fa fa-refresh"></i> Refresh Balance
+                    </div>
+                    <div class="wm-user-menu-item logout" id="logoutBtn">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </div>
+                </div>
             </div>
         </div>
         
-        <!-- Auth Forms -->
-        <div class="auth-forms">
-            <!-- Login Form -->
-            <div class="form-container active" id="loginForm">
-                <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
-                <p class="form-subtitle">Sign in to access your rewards dashboard</p>
-                
-                <div class="alert-box" id="loginAlert"></div>
-                
-                <form id="loginFormElement">
-                    <div class="input-group">
-                        <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" id="email" name="email" required 
-                               placeholder="your.email@example.com" autocomplete="email">
-                        <div class="input-hint">Enter your registered email</div>
+        <div class="wm-tabs" id="mainTabs">
+            <a href="#" class="wm-tab active" data-page="earn">
+                <i class="fa fa-star"></i> Earn
+            </a>
+            <a href="#" class="wm-tab" data-page="redeem">
+                <i class="fa fa-gift"></i> Redeem Code
+            </a>
+            <a href="#" class="wm-tab" data-page="shop">
+                <i class="fa fa-shopping-cart"></i> Shop
+            </a>
+            <a href="#" class="wm-tab" data-page="leaders">
+                <i class="fa fa-trophy"></i> Leaders
+            </a>
+            <a href="#" class="wm-tab" data-page="help">
+                <i class="fa fa-question-circle"></i> Help
+            </a>
+            <a href="#" class="wm-tab" data-page="chat">
+                <i class="fa fa-comments"></i> Chat
+            </a>
+        </div>
+        
+        <div class="mobile-swipe-hint" style="display: none;">
+            <i class="fa fa-arrows-h"></i> Swipe to see more tabs
+        </div>
+        
+        <div class="wm-content">
+            <!-- Earn Page -->
+            <div class="wm-page active" id="earnPage">
+                <div class="points-display">
+                    <div class="points-card">
+                        <div class="points-card-title">On Hold</div>
+                        <div class="points-card-value" id="holdPoints">0 pts</div>
+                        <div class="points-card-label">Points awaiting verification</div>
+                        <div class="points-card-badge">Pending</div>
                     </div>
                     
-                    <div class="input-group">
-                        <label for="password"><i class="fas fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="password" name="password" required 
-                                   placeholder="••••••••" autocomplete="current-password">
-                            <button type="button" class="toggle-password" id="togglePassword">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <div class="input-hint">Minimum 8 characters</div>
+                    <div class="points-card">
+                        <div class="points-card-title">Available</div>
+                        <div class="points-card-value" id="availablePoints">0 pts</div>
+                        <div class="points-card-label">Ready to redeem</div>
                     </div>
                     
-                    <div class="form-options">
-                        <label class="checkbox">
-                            <input type="checkbox" id="rememberMe" name="rememberMe">
-                            <span>Remember me</span>
-                        </label>
-                        <a href="#forgot-password" class="forgot-link">Forgot password?</a>
+                    <div class="points-card">
+                        <div class="points-card-title">Total Points</div>
+                        <div class="points-card-value" id="totalPoints">0 pts</div>
+                        <div class="points-card-label">All time earnings</div>
                     </div>
-                    
-                    <button type="submit" class="btn-primary" id="loginBtn">
-                        <span class="btn-text">Sign In</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-                
-                <div class="divider">
-                    <span>or</span>
                 </div>
                 
-                <div class="auth-footer">
-                    <p>New to iRewardz? <a href="#" id="switchToSignup">Create an account</a></p>
-                    <p class="terms">
-                        By continuing, you agree to our 
-                        <a href="#terms">Terms of Service</a> and 
-                        <a href="#privacy">Privacy Policy</a>
-                    </p>
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Earn Points from Offerwalls</div>
+                    <div class="wm-panel-body">
+                        <p>Complete offers from these partners to earn points. Points over 4000 will be placed on hold until approved.</p>
+                        
+                        <div class="wm-alert">
+                            <i class="fa fa-info-circle"></i> <strong>Real-time crediting:</strong> Points are automatically added when you complete offers. No manual claiming needed!
+                        </div>
+                        
+                        <div id="offerwallsContainer" class="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading offerwalls...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Recent Activity</div>
+                    <div class="wm-panel-body">
+                        <table class="wm-table" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Activity</th>
+                                    <th>Points</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="loading">Loading transactions...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             
-            <!-- Signup Form -->
-            <div class="form-container" id="signupForm">
-                <h2><i class="fas fa-user-plus"></i> Create Account</h2>
-                <p class="form-subtitle">Join iRewardz and start earning today</p>
-                
-                <div class="alert-box" id="signupAlert"></div>
-                
-                <form id="signupFormElement">
-                    <div class="input-group">
-                        <label for="username"><i class="fas fa-user"></i> Username</label>
-                        <input type="text" id="username" name="username" required 
-                               placeholder="Choose a username" autocomplete="username" minlength="3" maxlength="20">
-                        <div class="input-hint">3-20 characters, letters and numbers only</div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="signupEmail"><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" id="signupEmail" name="email" required 
-                               placeholder="your.email@example.com" autocomplete="email">
-                        <div class="input-hint">We'll never share your email</div>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="signupPassword" name="password" required 
-                                   placeholder="••••••••" autocomplete="new-password">
-                            <button type="button" class="toggle-password" id="toggleSignupPassword">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <div class="password-strength">
-                            <div class="strength-bar">
-                                <div class="strength-fill" id="passwordStrength"></div>
+            <!-- Redeem Code Page -->
+            <div class="wm-page" id="redeemPage">
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Redeem Bonus Codes</div>
+                    <div class="wm-panel-body">
+                        <div class="redeem-code-section">
+                            <h4 style="margin-top: 0; color: var(--wm-blue);">
+                                <i class="fa fa-gift"></i> Enter Bonus Code
+                            </h4>
+                            <p>Enter a bonus code below to receive free points instantly!</p>
+                            
+                            <div class="redeem-form">
+                                <input type="text" class="redeem-input" id="bonusCodeInput" placeholder="Enter bonus code (e.g., TEST100)" maxlength="20">
+                                <button class="wm-button" id="redeemCodeBtn">
+                                    <i class="fa fa-gift"></i> Redeem
+                                </button>
                             </div>
-                            <span class="strength-text" id="strengthText">Password strength</span>
+                            
+                            <div id="redeemMessage" class="auth-message" style="margin-top: 10px;"></div>
+                        </div>
+                        
+                        <div class="bonus-codes-list">
+                            <h5 style="color: var(--wm-blue); margin-bottom: 15px;">
+                                <i class="fa fa-tags"></i> Available Bonus Codes
+                            </h5>
+                            <div id="bonusCodesContainer">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading bonus codes...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="input-group">
-                        <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" required 
-                               placeholder="••••••••" autocomplete="new-password">
-                        <div class="input-hint">Re-enter your password</div>
-                    </div>
-                    
-                    <div class="form-options">
-                        <label class="checkbox">
-                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                            <span>I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a></span>
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" id="newsletter" name="newsletter">
-                            <span>Send me offers and updates</span>
-                        </label>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary" id="signupBtn">
-                        <span class="btn-text">Create Account</span>
-                        <i class="fas fa-check"></i>
-                    </button>
-                </form>
-                
-                <div class="divider">
-                    <span>or</span>
-                </div>
-                
-                <div class="auth-footer">
-                    <p>Already have an account? <a href="#" id="switchToLogin">Sign in here</a></p>
                 </div>
             </div>
             
-            <!-- Forgot Password Form -->
-            <div class="form-container" id="forgotForm">
-                <h2><i class="fas fa-key"></i> Reset Password</h2>
-                <p class="form-subtitle">Enter your email to receive reset instructions</p>
-                
-                <div class="alert-box" id="forgotAlert"></div>
-                
-                <form id="forgotFormElement">
-                    <div class="input-group">
-                        <label for="resetEmail"><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" id="resetEmail" name="email" required 
-                               placeholder="your.email@example.com" autocomplete="email">
-                        <div class="input-hint">Enter your registered email address</div>
+            <!-- Shop Page -->
+            <div class="wm-page" id="shopPage">
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Shop with Points</div>
+                    <div class="wm-panel-body">
+                        <p>You have <strong id="shopAvailablePoints">0 points</strong> available for redemption.</p>
+                        
+                        <div class="wm-alert">
+                            <i class="fa fa-info-circle"></i> <strong>Note:</strong> Cashout requests are processed within 3-5 business days.
+                        </div>
+                        
+                        <div id="cashoutOptionsContainer" class="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Loading cashout options...</p>
+                        </div>
                     </div>
-                    
-                    <button type="submit" class="btn-primary" id="resetBtn">
-                        <span class="btn-text">Send Reset Link</span>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
-                
-                <div class="auth-footer">
-                    <p><a href="#" id="backToLogin"><i class="fas fa-arrow-left"></i> Back to login</a></p>
+                </div>
+            </div>
+            
+            <!-- Leaders Page -->
+            <div class="wm-page" id="leadersPage">
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Leaderboard</div>
+                    <div class="wm-panel-body">
+                        <p>See how you rank against other members.</p>
+                        
+                        <div class="points-display">
+                            <div class="points-card">
+                                <div class="points-card-title">Your Rank</div>
+                                <div class="points-card-value" id="userRank">#0</div>
+                                <div class="points-card-label">This month</div>
+                            </div>
+                            
+                            <div class="points-card">
+                                <div class="points-card-title">Your Points</div>
+                                <div class="points-card-value" id="leaderPoints">0 pts</div>
+                                <div class="points-card-label">Total points</div>
+                            </div>
+                        </div>
+                        
+                        <div class="wm-alert">
+                            <i class="fa fa-trophy"></i> <strong>Leaderboard:</strong> Top performers are displayed below.
+                        </div>
+                        
+                        <table class="wm-table leaders-table" id="leaderboardTable">
+                            <thead>
+                                <tr>
+                                    <th width="80">Rank</th>
+                                    <th>User</th>
+                                    <th width="120">Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="loading">Loading leaderboard...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Help Page -->
+            <div class="wm-page" id="helpPage">
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Help & Support</div>
+                    <div class="wm-panel-body">
+                        <div class="help-category">
+                            <h4 style="color: var(--wm-blue); margin-top: 0;">
+                                <i class="fa fa-question-circle"></i> Frequently Asked Questions
+                            </h4>
+                            
+                            <div class="wm-accordion">
+                                <div class="wm-accordion-item">
+                                    <div class="wm-accordion-header active">
+                                        How do I earn points?
+                                    </div>
+                                    <div class="wm-accordion-body active">
+                                        Click on any offerwall, complete surveys, sign-ups, or other offers. Points are credited automatically in real-time when you complete offers.
+                                    </div>
+                                </div>
+                                
+                                <div class="wm-accordion-item">
+                                    <div class="wm-accordion-header">
+                                        Why are my points on hold?
+                                    </div>
+                                    <div class="wm-accordion-body">
+                                        Points over 4000 are placed on hold for verification to prevent fraud. They will be approved by an administrator within 3-5 business days.
+                                    </div>
+                                </div>
+                                
+                                <div class="wm-accordion-item">
+                                    <div class="wm-accordion-header">
+                                        How do I redeem points?
+                                    </div>
+                                    <div class="wm-accordion-body">
+                                        Go to the Shop page, select a cashout option, and submit your request. You'll receive payment within 3-5 business days after approval.
+                                    </div>
+                                </div>
+                                
+                                <div class="wm-accordion-item">
+                                    <div class="wm-accordion-header">
+                                        What are the postback URLs?
+                                    </div>
+                                    <div class="wm-accordion-body">
+                                        Postback URLs allow offerwalls to send completion data directly to our system for automatic crediting. Contact support for integration details.
+                                    </div>
+                                </div>
+                                
+                                <div class="wm-accordion-item">
+                                    <div class="wm-accordion-header">
+                                        How do bonus codes work?
+                                    </div>
+                                    <div class="wm-accordion-body">
+                                        Bonus codes are special codes that give you free points when redeemed. They have expiration dates and usage limits. Check the Redeem Code page for available codes.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="help-category">
+                            <h4 style="color: var(--wm-blue);">
+                                <i class="fa fa-life-ring"></i> Contact Support
+                            </h4>
+                            <p>If you need further assistance, please contact our support team:</p>
+                            
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                                <button class="wm-button" id="emailSupportBtn">
+                                    <i class="fa fa-envelope"></i> Email Support
+                                </button>
+                                <button class="wm-button" id="callSupportBtn">
+                                    <i class="fa fa-phone"></i> Call Support
+                                </button>
+                                <button class="wm-button" id="liveChatBtn">
+                                    <i class="fa fa-comments"></i> Live Chat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Page -->
+            <div class="wm-page" id="chatPage">
+                <div class="wm-panel">
+                    <div class="wm-panel-header">Community Chat</div>
+                    <div class="wm-panel-body">
+                        <div id="chatAccessMessage" class="wm-alert hidden">
+                            <i class="fa fa-lock"></i> <strong>Access Restricted:</strong> You need at least 500 points to access the chat.
+                        </div>
+                        
+                        <div id="chatContainer" class="hidden">
+                            <p>Chat with other members of the iRewardz community.</p>
+                            
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading chat messages...</p>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input-area">
+                                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message here...">
+                                <button class="wm-button" id="sendMessageBtn">
+                                    <i class="fa fa-paper-plane"></i> Send
+                                </button>
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 12px; color: var(--wm-text-light);">
+                                <i class="fa fa-info-circle"></i> Chat is moderated. Inappropriate messages may result in point deductions.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Security Badge -->
-        <div class="security-badge">
-            <i class="fas fa-shield-alt"></i>
-            <span>256-bit SSL Encryption • Secure Authentication</span>
+        <div class="wm-footer">
+            iRewardz &copy; 2026 | Real-time Offerwall Integration
         </div>
     </div>
+
+    <!-- Offerwall Modal -->
+    <div id="offerwallModal" class="offerwall-modal">
+        <div class="offerwall-modal-content">
+            <div class="offerwall-modal-header">
+                <h3 class="offerwall-modal-title" id="offerwallModalTitle">Offerwall</h3>
+                <button class="offerwall-modal-close" id="offerwallModalClose">&times;</button>
+            </div>
+            <div class="offerwall-modal-body">
+                <iframe id="offerwallIframe" class="offerwall-iframe" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <!-- Scripts -->
-    <script src="assets/js/config.js"></script>
-    <script src="assets/js/auth.js"></script>
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNVZP5iQVBWQCLOQfbdPva57fSYo9UbEWjjHQls7p2ygLufkDAldaWZZ4q6PB4twMqqw/exec';
+        
+        let currentUser = null;
+        let appData = null;
+        let refreshInterval = null;
+        let currentOfferwall = null;
+        
+        $(document).ready(function() {
+            initializeDatabase();
+            checkLoginStatus();
+            startTimeUpdate();
+            setDayNightMode();
+            
+            if ($(window).width() <= 767) {
+                $('.mobile-swipe-hint').show();
+            }
+            
+            // Login/Signup form toggle
+            $('#showSignup').on('click', function(e) {
+                e.preventDefault();
+                $('#loginContainer').addClass('hidden');
+                $('#signupContainer').removeClass('hidden');
+                clearAuthMessages();
+            });
+            
+            $('#showLogin').on('click', function(e) {
+                e.preventDefault();
+                $('#signupContainer').addClass('hidden');
+                $('#loginContainer').removeClass('hidden');
+                clearAuthMessages();
+            });
+            
+            // Login form submission
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                const email = $('#loginEmail').val().trim();
+                const password = $('#loginPassword').val();
+                
+                if (!email || !password) {
+                    showAuthMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                $('#loginBtn').html('<i class="fa fa-spinner fa-spin"></i> Logging in...').prop('disabled', true);
+                
+                callAppsScript('login', { email, password })
+                    .then(response => {
+                        if (response.success) {
+                            localStorage.setItem('iRewardzUser', JSON.stringify(response));
+                            currentUser = response;
+                            showApp();
+                            loadAppData();
+                            startAutoRefresh();
+                            showNotification('Login successful!', 'success');
+                        } else {
+                            showAuthMessage(response.message || 'Login failed', 'error');
+                            $('#loginBtn').html('<i class="fa fa-sign-in"></i> Login').prop('disabled', false);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Login error:', error);
+                        showAuthMessage('Error connecting to server', 'error');
+                        $('#loginBtn').html('<i class="fa fa-sign-in"></i> Login').prop('disabled', false);
+                    });
+            });
+            
+            // Signup form submission
+            $('#signupForm').on('submit', function(e) {
+                e.preventDefault();
+                const username = $('#signupUsername').val().trim();
+                const email = $('#signupEmail').val().trim();
+                const password = $('#signupPassword').val();
+                const confirmPassword = $('#signupConfirmPassword').val();
+                
+                if (!username || !email || !password || !confirmPassword) {
+                    showAuthMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showAuthMessage('Passwords do not match', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showAuthMessage('Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                $('#signupBtn').html('<i class="fa fa-spinner fa-spin"></i> Creating account...').prop('disabled', true);
+                
+                callAppsScript('signup', { username, email, password })
+                    .then(response => {
+                        if (response.success) {
+                            showAuthMessage('Registration successful! You can now login.', 'success');
+                            
+                            setTimeout(() => {
+                                $('#signupContainer').addClass('hidden');
+                                $('#loginContainer').removeClass('hidden');
+                                $('#loginEmail').val(email);
+                                $('#signupBtn').html('<i class="fa fa-user-plus"></i> Create Account').prop('disabled', false);
+                                clearAuthMessages();
+                            }, 2000);
+                        } else {
+                            showAuthMessage(response.message || 'Registration failed', 'error');
+                            $('#signupBtn').html('<i class="fa fa-user-plus"></i> Create Account').prop('disabled', false);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Signup error:', error);
+                        showAuthMessage('Error connecting to server', 'error');
+                        $('#signupBtn').html('<i class="fa fa-user-plus"></i> Create Account').prop('disabled', false);
+                    });
+            });
+            
+            // User menu functionality
+            $('#userIcon').on('click', function(e) {
+                e.stopPropagation();
+                $('#userMenu').toggleClass('active');
+            });
+            
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#userIcon, #userMenu').length) {
+                    $('#userMenu').removeClass('active');
+                }
+            });
+            
+            // Refresh balance button
+            $('#refreshBalanceBtn').on('click', function() {
+                if (currentUser) {
+                    loadAppData();
+                    showNotification('Balance refreshed!', 'success');
+                    $('#userMenu').removeClass('active');
+                }
+            });
+            
+            // Logout button handler
+            $('#logoutBtn').on('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    logout();
+                }
+            });
+            
+            // Tab switching
+            $('.wm-tab').on('click', function(e) {
+                e.preventDefault();
+                
+                const pageId = $(this).data('page');
+                const targetPage = pageId + 'Page';
+                
+                $('.wm-tab').removeClass('active');
+                $(this).addClass('active');
+                
+                $('.wm-page').removeClass('active');
+                $(`#${targetPage}`).addClass('active');
+                
+                loadPageData(pageId);
+                
+                if ($(window).width() <= 767) {
+                    const $activeTab = $(this);
+                    const container = $('.wm-tabs')[0];
+                    const scrollLeft = $activeTab.offset().left - container.offsetLeft - 20;
+                    
+                    $('.wm-tabs').animate({
+                        scrollLeft: scrollLeft
+                    }, 300);
+                }
+                
+                $('#userMenu').removeClass('active');
+            });
+            
+            // Offerwall modal close
+            $('#offerwallModalClose').on('click', function() {
+                closeOfferwallModal();
+            });
+            
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && $('#offerwallModal').hasClass('active')) {
+                    closeOfferwallModal();
+                }
+            });
+            
+            // Redeem bonus code
+            $('#redeemCodeBtn').on('click', function() {
+                redeemBonusCode();
+            });
+            
+            $('#bonusCodeInput').on('keypress', function(e) {
+                if (e.which === 13) {
+                    redeemBonusCode();
+                }
+            });
+            
+            // Send chat message
+            $('#sendMessageBtn').on('click', sendChatMessage);
+            $('#chatInput').on('keypress', function(e) {
+                if (e.which === 13) {
+                    sendChatMessage();
+                }
+            });
+            
+            // Support buttons
+            $('#emailSupportBtn').on('click', function() {
+                showNotification('Email support: support@irewardz.com', 'info');
+            });
+            
+            $('#callSupportBtn').on('click', function() {
+                showNotification('Call support: 1-800-REWARDS', 'info');
+            });
+            
+            $('#liveChatBtn').on('click', function() {
+                showNotification('Live chat is available 9 AM - 5 PM EST', 'info');
+            });
+            
+            // Accordion functionality
+            $('.wm-accordion-header').on('click', function() {
+                const $accordionItem = $(this).closest('.wm-accordion-item');
+                const $accordionBody = $accordionItem.find('.wm-accordion-body');
+                
+                $(this).toggleClass('active');
+                
+                if ($(this).hasClass('active')) {
+                    $accordionBody.slideDown(300);
+                } else {
+                    $accordionBody.slideUp(300);
+                }
+            });
+            
+            // Mobile swipe functionality
+            let startX = 0;
+            let endX = 0;
+            const threshold = 50;
+            
+            $('.wm-tabs').on('touchstart', function(e) {
+                startX = e.originalEvent.touches[0].pageX;
+            });
+            
+            $('.wm-tabs').on('touchend', function(e) {
+                endX = e.originalEvent.changedTouches[0].pageX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                if (Math.abs(endX - startX) < threshold) return;
+                
+                const $activeTab = $('.wm-tab.active');
+                if (endX < startX) {
+                    const $nextTab = $activeTab.next('.wm-tab');
+                    if ($nextTab.length) {
+                        $nextTab.trigger('click');
+                    }
+                } else {
+                    const $prevTab = $activeTab.prev('.wm-tab');
+                    if ($prevTab.length) {
+                        $prevTab.trigger('click');
+                    }
+                }
+            }
+            
+            // Handle window resize
+            $(window).on('resize', function() {
+                if ($(window).width() <= 767) {
+                    $('.mobile-swipe-hint').show();
+                } else {
+                    $('.mobile-swipe-hint').hide();
+                }
+            });
+        });
+        
+        // Function to set day/night mode based on PST time
+        function setDayNightMode() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            // PST is UTC-8 (or UTC-7 during daylight saving)
+            let pstOffset = -8 * 60 * 60000; // -8 hours in milliseconds
+            
+            // Check if we're in daylight saving time (second Sunday in March to first Sunday in November)
+            const year = now.getUTCFullYear();
+            const dstStart = new Date(Date.UTC(year, 2, 14 - new Date(Date.UTC(year, 2, 1)).getUTCDay()));
+            const dstEnd = new Date(Date.UTC(year, 10, 7 - new Date(Date.UTC(year, 10, 1)).getUTCDay()));
+            
+            if (now >= dstStart && now < dstEnd) {
+                pstOffset = -7 * 60 * 60000; // -7 hours during daylight saving
+            }
+            
+            const pstTime = new Date(utc + pstOffset);
+            const hour = pstTime.getHours();
+            
+            // Update time indicator
+            const timeStr = pstTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZoneName: 'short'});
+            $('#currentPSTTime').text(timeStr);
+            $('#timeIndicator').show();
+            
+            // Remove existing classes
+            $('body').removeClass('day-mode night-mode');
+            
+            // Set day or night mode
+            if (hour >= 6 && hour < 18) {
+                $('body').addClass('day-mode');
+            } else {
+                $('body').addClass('night-mode');
+            }
+        }
+        
+        // Start time update interval
+        function startTimeUpdate() {
+            setDayNightMode();
+            setInterval(setDayNightMode, 60000); // Update every minute
+        }
+        
+        // Initialize database
+        function initializeDatabase() {
+            callAppsScript('init', {})
+                .then(response => {
+                    console.log('Database initialized:', response);
+                })
+                .catch(error => {
+                    console.error('Database initialization error:', error);
+                });
+        }
+        
+        // Check login status
+        function checkLoginStatus() {
+            const storedUser = localStorage.getItem('iRewardzUser');
+            if (storedUser) {
+                try {
+                    currentUser = JSON.parse(storedUser);
+                    if (currentUser && currentUser.userId) {
+                        showApp();
+                        loadAppData();
+                        startAutoRefresh();
+                    } else {
+                        showLogin();
+                    }
+                } catch (e) {
+                    showLogin();
+                }
+            } else {
+                showLogin();
+            }
+        }
+        
+        // Show login form
+        function showLogin() {
+            $('#appContainer').addClass('hidden');
+            $('#signupContainer').addClass('hidden');
+            $('#loginContainer').removeClass('hidden');
+            clearAuthMessages();
+            stopAutoRefresh();
+        }
+        
+        // Show app
+        function showApp() {
+            $('#loginContainer').addClass('hidden');
+            $('#signupContainer').addClass('hidden');
+            $('#appContainer').removeClass('hidden');
+            
+            if (currentUser) {
+                $('#userInitials').text(getInitials(currentUser.username));
+                $('#menuUsername').text(currentUser.username);
+                $('#userWelcome').text(`Welcome back, ${currentUser.username}!`);
+            }
+        }
+        
+        // Start auto-refresh for real-time updates
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            
+            // Refresh every 30 seconds to check for new points
+            refreshInterval = setInterval(() => {
+                if (currentUser && $('#appContainer').is(':visible')) {
+                    refreshUserData();
+                }
+            }, 30000);
+        }
+        
+        // Stop auto-refresh
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+        
+        // Refresh user data
+        function refreshUserData() {
+            if (!currentUser) return;
+            
+            callAppsScript('getAppData', { userId: currentUser.userId })
+                .then(response => {
+                    if (response.success && appData) {
+                        // Check if points changed
+                        const oldPoints = appData.user.totalPoints;
+                        const newPoints = response.user.totalPoints;
+                        
+                        if (newPoints > oldPoints) {
+                            const pointsEarned = newPoints - oldPoints;
+                            showNotification(`+${formatPoints(pointsEarned)} points credited automatically!`, 'success');
+                            
+                            // Add pulse animation
+                            $('.points-card-value').addClass('points-pulse');
+                            setTimeout(() => {
+                                $('.points-card-value').removeClass('points-pulse');
+                            }, 500);
+                        }
+                        
+                        appData = response;
+                        currentUser = response.user;
+                        localStorage.setItem('iRewardzUser', JSON.stringify(currentUser));
+                        updateUI();
+                    }
+                })
+                .catch(error => console.error('Refresh error:', error));
+        }
+        
+        // Load app data
+        function loadAppData() {
+            if (!currentUser || !currentUser.userId) {
+                showLogin();
+                return;
+            }
+            
+            showLoading('earnPage');
+            showLoading('redeemPage');
+            showLoading('shopPage');
+            showLoading('leadersPage');
+            showLoading('chatPage');
+            
+            callAppsScript('getAppData', { userId: currentUser.userId })
+                .then(response => {
+                    if (response.success) {
+                        appData = response;
+                        currentUser = response.user;
+                        localStorage.setItem('iRewardzUser', JSON.stringify(currentUser));
+                        
+                        updateUI();
+                        loadPageData('earn');
+                    } else {
+                        showNotification('Failed to load app data: ' + response.message, 'error');
+                        logout();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading app data:', error);
+                    showNotification('Error connecting to server', 'error');
+                });
+        }
+        
+        // Logout
+        function logout() {
+            localStorage.removeItem('iRewardzUser');
+            currentUser = null;
+            appData = null;
+            showLogin();
+            stopAutoRefresh();
+            showNotification('You have been logged out.', 'info');
+        }
+        
+        // Update UI
+        function updateUI() {
+            if (!appData || !currentUser) return;
+            
+            $('#totalPoints').text(formatPoints(currentUser.totalPoints) + ' pts');
+            $('#availablePoints').text(formatPoints(currentUser.availablePoints) + ' pts');
+            $('#holdPoints').text(formatPoints(currentUser.holdPoints) + ' pts');
+            $('#shopAvailablePoints').text(formatPoints(currentUser.availablePoints) + ' points');
+            $('#leaderPoints').text(formatPoints(currentUser.totalPoints) + ' pts');
+            
+            $('.points-card-value').addClass('points-pulse');
+            setTimeout(() => {
+                $('.points-card-value').removeClass('points-pulse');
+            }, 500);
+            
+            let userRank = 0;
+            if (appData.leaderboard && appData.leaderboard.length > 0) {
+                for (let i = 0; i < appData.leaderboard.length; i++) {
+                    if (appData.leaderboard[i].userId === currentUser.userId) {
+                        userRank = appData.leaderboard[i].rank;
+                        break;
+                    }
+                }
+            }
+            $('#userRank').text('#' + userRank);
+        }
+        
+        // Load page data
+        function loadPageData(pageId) {
+            if (!appData) return;
+            
+            switch(pageId) {
+                case 'earn':
+                    loadEarnPage();
+                    break;
+                case 'redeem':
+                    loadRedeemPage();
+                    break;
+                case 'shop':
+                    loadShopPage();
+                    break;
+                case 'leaders':
+                    loadLeadersPage();
+                    break;
+                case 'chat':
+                    loadChatPage();
+                    break;
+            }
+        }
+        
+        // Load earn page
+        function loadEarnPage() {
+            if (!appData.offerwalls) return;
+            
+            let offerwallsHtml = '';
+            if (appData.offerwalls.length === 0) {
+                offerwallsHtml = '<div class="wm-alert"><i class="fa fa-info-circle"></i> No offerwalls available. Contact admin to add offerwalls.</div>';
+            } else {
+                offerwallsHtml = '<div class="offerwall-grid">';
+                appData.offerwalls.forEach(offerwall => {
+                    offerwallsHtml += `
+                        <div class="offerwall-card">
+                            <div class="offerwall-header">
+                                <div class="offerwall-logo">
+                                    <img src="${offerwall.logoUrl || 'https://via.placeholder.com/50x50?text=OW'}" alt="${offerwall.name}">
+                                </div>
+                                <div class="offerwall-info">
+                                    <div class="offerwall-name">${offerwall.name}</div>
+                                    <div class="offerwall-rate">$1 = ${offerwall.currencyFactor} points</div>
+                                </div>
+                            </div>
+                            <div class="offerwall-body">
+                                <div class="offerwall-stats">
+                                    <div class="offerwall-stat">
+                                        <div class="offerwall-stat-value">${offerwall.currencyFactor}</div>
+                                        <div class="offerwall-stat-label">Points per $1</div>
+                                    </div>
+                                    <div class="offerwall-stat">
+                                        <div class="offerwall-stat-value">${offerwall.minPayout}</div>
+                                        <div class="offerwall-stat-label">Min Payout</div>
+                                    </div>
+                                </div>
+                                <button class="wm-button wm-button-small open-offerwall" data-offerwall-id="${offerwall.id}" data-offerwall-name="${offerwall.name}">
+                                    <i class="fa fa-external-link"></i> Access Offerwall
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                offerwallsHtml += '</div>';
+            }
+            
+            $('#offerwallsContainer').removeClass('loading').html(offerwallsHtml);
+            
+            // Add event listeners to offerwall buttons
+            $('.open-offerwall').off('click').on('click', function() {
+                const offerwallId = $(this).data('offerwall-id');
+                const offerwallName = $(this).data('offerwall-name');
+                const offerwall = appData.offerwalls.find(ow => ow.id === offerwallId);
+                
+                if (offerwall) {
+                    openOfferwallModal(offerwall, offerwallName);
+                }
+            });
+            
+            // Load transactions
+            let transactionsHtml = '';
+            if (!appData.transactions || appData.transactions.length === 0) {
+                transactionsHtml = `
+                    <tr>
+                        <td colspan="4" class="loading">No transactions yet. Start earning points!</td>
+                    </tr>
+                `;
+            } else {
+                appData.transactions.forEach(transaction => {
+                    const statusBadge = transaction.status === 'On Hold' ? 
+                        '<span class="wm-badge wm-badge-warning">On Hold</span>' : 
+                        '<span class="wm-badge wm-badge-success">Available</span>';
+                    
+                    const date = new Date(transaction.timestamp).toLocaleDateString();
+                    
+                    transactionsHtml += `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${transaction.description}</td>
+                            <td>${transaction.points > 0 ? '+' : ''}${formatPoints(transaction.points)} pts</td>
+                            <td>${statusBadge}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            $('#transactionsTable tbody').html(transactionsHtml);
+        }
+        
+        // Load redeem page
+        function loadRedeemPage() {
+            // Load bonus codes
+            loadBonusCodes();
+        }
+        
+        // Load shop page
+        function loadShopPage() {
+            if (!appData.cashoutOptions) return;
+            
+            let cashoutHtml = '';
+            if (appData.cashoutOptions.length === 0) {
+                cashoutHtml = '<div class="wm-alert"><i class="fa fa-info-circle"></i> No cashout options available at the moment.</div>';
+            } else {
+                appData.cashoutOptions.forEach(option => {
+                    const canAfford = currentUser.availablePoints >= option.pointsRequired;
+                    const buttonText = canAfford ? 
+                        `Redeem for $${option.cashValue}` : 
+                        `Need ${formatPoints(option.pointsRequired - currentUser.availablePoints)} More Points`;
+                    
+                    cashoutHtml += `
+                        <div class="shop-item">
+                            <h4 style="margin-top: 0; color: var(--wm-blue);">${option.name}</h4>
+                            <p>${option.description}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>Cost:</strong> ${formatPoints(option.pointsRequired)} points
+                                    <br><small>Value: $${option.cashValue}</small>
+                                </div>
+                                <button class="wm-button redeem-btn" data-option-id="${option.id}" ${!canAfford ? 'disabled' : ''}>
+                                    <i class="fa fa-shopping-cart"></i> ${buttonText}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            $('#cashoutOptionsContainer').removeClass('loading').html(cashoutHtml);
+            
+            // Add event listeners to redeem buttons
+            $('.redeem-btn').off('click').on('click', function() {
+                if ($(this).prop('disabled')) return;
+                
+                const optionId = $(this).data('option-id');
+                const option = appData.cashoutOptions.find(opt => opt.id === optionId);
+                
+                if (option && confirm(`Are you sure you want to redeem ${formatPoints(option.pointsRequired)} points for $${option.cashValue}?`)) {
+                    $(this).html('<i class="fa fa-spinner fa-spin"></i> Processing...').prop('disabled', true);
+                    
+                    callAppsScript('cashout', { userId: currentUser.userId, optionId })
+                        .then(response => {
+                            if (response.success) {
+                                currentUser.availablePoints = response.remainingPoints;
+                                localStorage.setItem('iRewardzUser', JSON.stringify(currentUser));
+                                
+                                updateUI();
+                                loadShopPage();
+                                
+                                showNotification(`Cashout request submitted for $${response.cashValue}. It will be processed within 3-5 business days.`, 'success');
+                            } else {
+                                showNotification('Cashout failed: ' + response.message, 'error');
+                                $(this).html(`<i class="fa fa-shopping-cart"></i> Redeem for $${option.cashValue}`).prop('disabled', false);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Cashout error:', error);
+                            showNotification('Error processing cashout', 'error');
+                            $(this).html(`<i class="fa fa-shopping-cart"></i> Redeem for $${option.cashValue}`).prop('disabled', false);
+                        });
+                }
+            });
+        }
+        
+        // Load leaders page
+        function loadLeadersPage() {
+            if (!appData.leaderboard) return;
+            
+            let leaderboardHtml = '';
+            if (appData.leaderboard.length === 0) {
+                leaderboardHtml = `
+                    <tr>
+                        <td colspan="3" class="loading">No leaderboard data available.</td>
+                    </tr>
+                `;
+            } else {
+                appData.leaderboard.forEach(user => {
+                    const isCurrentUser = user.userId === currentUser.userId;
+                    const rowClass = isCurrentUser ? 'class="leader-you"' : '';
+                    
+                    leaderboardHtml += `
+                        <tr ${rowClass}>
+                            <td><span class="leader-rank">#${user.rank}</span></td>
+                            <td>${user.username} ${isCurrentUser ? '(You)' : ''}</td>
+                            <td>${formatPoints(user.totalPoints)} pts</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            $('#leaderboardTable tbody').html(leaderboardHtml);
+        }
+        
+        // Load chat page
+        function loadChatPage() {
+            if (!appData.chatMessages) return;
+            
+            if (currentUser.totalPoints < 500) {
+                $('#chatAccessMessage').removeClass('hidden');
+                $('#chatContainer').addClass('hidden');
+                return;
+            }
+            
+            $('#chatAccessMessage').addClass('hidden');
+            $('#chatContainer').removeClass('hidden');
+            
+            let chatHtml = '';
+            if (!appData.chatMessages || appData.chatMessages.length === 0) {
+                chatHtml = `
+                    <div class="chat-message system">
+                        <strong>System:</strong> Welcome to iRewardz Community Chat! No messages yet.
+                    </div>
+                `;
+            } else {
+                appData.chatMessages.forEach(msg => {
+                    const isSystem = msg.username === 'System' || msg.username === 'Moderator';
+                    const messageClass = isSystem ? 'system' : 'user';
+                    const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    chatHtml += `
+                        <div class="chat-message ${messageClass}">
+                            <strong>${msg.username}:</strong> ${msg.message}
+                            <div style="font-size: 10px; color: #999; text-align: right;">${time}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            $('#chatMessages').html(chatHtml);
+            $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+        }
+        
+        // Open offerwall in modal
+        function openOfferwallModal(offerwall, offerwallName) {
+            currentOfferwall = offerwall;
+            
+            callAppsScript('generateOfferwallUrl', { 
+                userId: currentUser.userId, 
+                offerwallId: offerwall.id 
+            })
+            .then(response => {
+                if (response.success) {
+                    $('#offerwallModalTitle').text(offerwallName);
+                    $('#offerwallIframe').attr('src', response.url);
+                    $('#offerwallModal').addClass('active');
+                    
+                    // Disable body scroll when modal is open
+                    $('body').css('overflow', 'hidden');
+                    
+                    showNotification(
+                        'Offerwall opened! Complete offers to earn points automatically.', 
+                        'success'
+                    );
+                } else {
+                    // Fallback to direct link
+                    window.open(offerwall.link.replace('{userid}', currentUser.userId), '_blank');
+                    showNotification(
+                        'Offerwall opened! Complete offers to earn points.', 
+                        'info'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Error generating offerwall URL:', error);
+                window.open(offerwall.link.replace('{userid}', currentUser.userId), '_blank');
+                showNotification(
+                    'Offerwall opened! Complete offers to earn points.', 
+                    'info'
+                );
+            });
+        }
+        
+        // Close offerwall modal
+        function closeOfferwallModal() {
+            $('#offerwallModal').removeClass('active');
+            $('#offerwallIframe').attr('src', 'about:blank');
+            currentOfferwall = null;
+            
+            // Re-enable body scroll
+            $('body').css('overflow', 'auto');
+            
+            // Refresh data when offerwall is closed
+            setTimeout(() => {
+                loadAppData();
+            }, 1000);
+        }
+        
+        // Load bonus codes
+        function loadBonusCodes() {
+            if (!currentUser) return;
+            
+            $('#bonusCodesContainer').addClass('loading').html('<div class="loading-spinner"></div><p>Loading bonus codes...</p>');
+            
+            callAppsScript('getBonusCodes', { userId: currentUser.userId })
+                .then(bonusCodes => {
+                    displayBonusCodes(bonusCodes);
+                })
+                .catch(error => {
+                    console.error('Error loading bonus codes:', error);
+                    $('#bonusCodesContainer').removeClass('loading').html('<div class="wm-alert">Error loading bonus codes. Please try again.</div>');
+                });
+        }
+        
+        // Display bonus codes
+        function displayBonusCodes(bonusCodes) {
+            let codesHtml = '';
+            
+            if (!bonusCodes || bonusCodes.length === 0) {
+                codesHtml = '<div class="wm-alert"><i class="fa fa-info-circle"></i> No bonus codes available at the moment. Check back later!</div>';
+            } else {
+                bonusCodes.forEach(bonusCode => {
+                    const statusClass = bonusCode.redeemed ? 'status-redeemed' : 'status-available';
+                    const statusText = bonusCode.redeemed ? 'Redeemed' : 'Available';
+                    const buttonHtml = bonusCode.redeemed ? 
+                        '<button class="wm-button wm-button-small" disabled><i class="fa fa-check"></i> Redeemed</button>' :
+                        `<button class="wm-button wm-button-small redeem-now-btn" data-code="${bonusCode.code}"><i class="fa fa-gift"></i> Redeem Now</button>`;
+                    
+                    codesHtml += `
+                        <div class="bonus-code-item">
+                            <div class="bonus-code-details">
+                                <div class="bonus-code-name">${bonusCode.code} - ${formatPoints(bonusCode.points)} points</div>
+                                <div class="bonus-code-value">${bonusCode.description} • Expires: ${bonusCode.expires}</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bonus-code-status ${statusClass}">${statusText}</div>
+                                ${buttonHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            $('#bonusCodesContainer').removeClass('loading').html(codesHtml);
+            
+            // Add event listeners to redeem buttons
+            $('.redeem-now-btn').off('click').on('click', function() {
+                const code = $(this).data('code');
+                $('#bonusCodeInput').val(code);
+                redeemBonusCode();
+            });
+        }
+        
+        // Redeem bonus code
+        function redeemBonusCode() {
+            const bonusCode = $('#bonusCodeInput').val().trim().toUpperCase();
+            
+            if (!bonusCode) {
+                showRedeemMessage('Please enter a bonus code', 'error');
+                return;
+            }
+            
+            $('#redeemCodeBtn').html('<i class="fa fa-spinner fa-spin"></i> Redeeming...').prop('disabled', true);
+            
+            callAppsScript('redeemBonus', { userId: currentUser.userId, code: bonusCode })
+                .then(response => {
+                    if (response.success) {
+                        showRedeemMessage(response.message, 'success');
+                        $('#bonusCodeInput').val('');
+                        
+                        // Refresh user data
+                        loadAppData();
+                        
+                        // Reload bonus codes
+                        setTimeout(() => {
+                            loadBonusCodes();
+                        }, 500);
+                    } else {
+                        showRedeemMessage(response.message, 'error');
+                    }
+                    $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
+                })
+                .catch(error => {
+                    console.error('Bonus code error:', error);
+                    showRedeemMessage('Error redeeming code. Please try again.', 'error');
+                    $('#redeemCodeBtn').html('<i class="fa fa-gift"></i> Redeem').prop('disabled', false);
+                });
+        }
+        
+        // Send chat message
+        function sendChatMessage() {
+            const message = $('#chatInput').val().trim();
+            if (!message) return;
+            
+            callAppsScript('sendChat', { userId: currentUser.userId, message })
+                .then(response => {
+                    if (response.success) {
+                        const time = new Date(response.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const chatHtml = `
+                            <div class="chat-message user">
+                                <strong>${response.username}:</strong> ${message}
+                                <div style="font-size: 10px; color: #999; text-align: right;">${time}</div>
+                            </div>
+                        `;
+                        
+                        $('#chatMessages').append(chatHtml);
+                        $('#chatInput').val('');
+                        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+                        
+                        setTimeout(() => {
+                            loadChatPage();
+                        }, 1000);
+                    } else {
+                        showNotification('Failed to send message: ' + response.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending chat message:', error);
+                    showNotification('Error sending message', 'error');
+                });
+        }
+        
+        // Helper function to call Google Apps Script
+        function callAppsScript(action, data) {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('action', action);
+                
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key]);
+                });
+                
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => resolve(data))
+                    .catch(error => reject(error));
+            });
+        }
+        
+        // Helper functions
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        }
+        
+        function formatPoints(points) {
+            return points.toLocaleString();
+        }
+        
+        function showAuthMessage(message, type) {
+            const $message = $(`#${type === 'signup' ? 'signupMessage' : 'authMessage'}`);
+            $message.removeClass('auth-success auth-error')
+                   .addClass(`auth-${type}`)
+                   .text(message)
+                   .show();
+            
+            setTimeout(() => {
+                $message.hide();
+            }, 5000);
+        }
+        
+        function showRedeemMessage(message, type) {
+            const $message = $('#redeemMessage');
+            $message.removeClass('auth-success auth-error')
+                   .addClass(`auth-${type}`)
+                   .text(message)
+                   .show();
+            
+            setTimeout(() => {
+                $message.hide();
+            }, 5000);
+        }
+        
+        function clearAuthMessages() {
+            $('#authMessage, #signupMessage, #redeemMessage').hide().removeClass('auth-success auth-error');
+        }
+        
+        function showLoading(pageId) {
+            $(`#${pageId} .loading`).show();
+        }
+        
+        function showNotification(message, type) {
+            const backgroundColor = type === 'success' ? 'var(--wm-green)' : 
+                                  type === 'warning' ? 'var(--wm-orange)' : 
+                                  type === 'info' ? 'var(--wm-blue)' : 'var(--wm-blue)';
+            const $notification = $(`
+                <div class="wm-alert" style="position: fixed; top: 20px; right: 20px; max-width: 300px; z-index: 9999; background: ${backgroundColor}; color: white; border-color: ${backgroundColor};">
+                    <button type="button" class="close" style="color: white; opacity: 0.8; margin-left: 10px;">&times;</button>
+                    ${message}
+                </div>
+            `);
+            
+            $notification.find('.close').on('click', function() {
+                $notification.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+            
+            $('body').append($notification);
+            
+            setTimeout(() => {
+                $notification.fadeOut(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    </script>
+    <script>
+
+    // Example in JavaScript
+const userId = loggedInUser.id; // Get logged-in user's ID dynamically
+const apiKey = "69745f8e8f2ce697824072";
+
+const wannadsUrl = `https://earn.wannads.com/wall?apiKey=${apiKey}&userId=${userId}`;
+
+// Open in new tab when user clicks
+window.open(wannadsUrl, "_blank");
+
+    </script>
 </body>
 </html>
