@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>iRewardz Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <!-- Security Overlay -->
+    <div id="securityOverlay" class="security-overlay">
+        <div class="security-check">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Security Check</h3>
+            <p>Verifying your session...</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+    </div>
+    
+    <!-- Main App -->
+    <div id="app" class="app-container hidden">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="iRewardz">
+                    <span class="logo-text">iRewardz</span>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="time-display" id="timeDisplay">
+                    <i class="fas fa-clock"></i>
+                    <span id="currentTime">Loading...</span>
+                </div>
+                <div class="server-status" id="serverStatus">
+                    <i class="fas fa-circle"></i>
+                    <span>Live</span>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="notification-bell" id="notificationBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationCount">0</span>
+                </div>
+                <div class="user-profile" id="userProfile">
+                    <div class="avatar" id="userAvatar">
+                        <span id="avatarInitials">JD</span>
+                    </div>
+                    <div class="user-info">
+                        <span class="username" id="displayUsername">JohnDoe</span>
+                        <span class="user-id" id="displayUserId">ID: #####</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="balance-card">
+                    <div class="balance-label">Available Balance</div>
+                    <div class="balance-amount" id="availableBalance">0 pts</div>
+                    <div class="balance-actions">
+                        <button class="btn-icon" id="refreshBalance">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="btn-icon" id="withdrawBtn">
+                            <i class="fas fa-wallet"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#earn" class="nav-item" data-page="earn">
+                    <i class="fas fa-coins"></i>
+                    <span>Earn Points</span>
+                    <span class="badge new">NEW</span>
+                </a>
+                <a href="#offerwalls" class="nav-item" data-page="offerwalls">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Offerwalls</span>
+                </a>
+                <a href="#withdraw" class="nav-item" data-page="withdraw">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Withdraw</span>
+                </a>
+                <a href="#leaderboard" class="nav-item" data-page="leaderboard">
+                    <i class="fas fa-trophy"></i>
+                    <span>Leaderboard</span>
+                </a>
+                <a href="#referrals" class="nav-item" data-page="referrals">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Referrals</span>
+                </a>
+                <a href="#bonus" class="nav-item" data-page="bonus">
+                    <i class="fas fa-gift"></i>
+                    <span>Bonus Codes</span>
+                </a>
+                <a href="#history" class="nav-item" data-page="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="#support" class="nav-item" data-page="support">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Points</span>
+                        <span class="stat-value" id="totalPointsStat">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Hold Points</span>
+                        <span class="stat-value" id="holdPointsStat">0</span>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Pages will be loaded here dynamically -->
+            <div class="page active" id="dashboardPage">
+                <!-- Dashboard content will be loaded via JavaScript -->
+            </div>
+        </main>
+        
+        <!-- Modals -->
+        <div class="modal" id="userMenuModal">
+            <div class="modal-content">
+                <!-- User menu content -->
+            </div>
+        </div>
+        
+        <!-- Notifications Panel -->
+        <div class="notifications-panel" id="notificationsPanel">
+            <!-- Notifications content -->
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
