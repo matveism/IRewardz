@@ -7,7 +7,7 @@
 
 const CONFIG = {
     // Google Apps Script URL
-    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxNVZP5iQVBWQCLOQfbdPva57fSYo9UbEWjjHQls7p2ygLufkDAldaWZZ4q6PB4twMqqw/exec',
     
     // API Keys (Encrypted in production)
     API_KEYS: {
@@ -23,7 +23,7 @@ const CONFIG = {
         MAX_LOGIN_ATTEMPTS: 5,
         PASSWORD_MIN_LENGTH: 8,
         ENABLE_2FA: true,
-        ALLOWED_ORIGINS: ['https://yourdomain.com']
+        ALLOWED_ORIGINS: ['https://i-rewardz.netlify.app/']
     },
     
     // Application Settings
